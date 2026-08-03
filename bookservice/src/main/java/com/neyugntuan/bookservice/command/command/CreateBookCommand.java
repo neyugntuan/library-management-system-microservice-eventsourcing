@@ -1,26 +1,22 @@
-package com.neyugntuan.bookservice.command.data;
+package com.neyugntuan.bookservice.command.command;
 
-
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-@Entity
-@Table(name ="books")
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Book {
-    @Id
-    @GeneratedValue( strategy = GenerationType.UUID)
+public class CreateBookCommand {
+
+    @TargetAggregateIdentifier
     private String id;
 
     private String name;
     private String author;
     private Boolean isReady;
-
-
 }
