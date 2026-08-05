@@ -1,25 +1,18 @@
-package com.neyugntuan.bookservice.command.data;
+package com.neyugntuan.bookservice.command.event;
 
-
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name ="books")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Book {
-    @Id
+public class BookUpdatedEvent {
     private String id;
 
     private String name;
     private String author;
     private Boolean isReady;
-
-
 }
