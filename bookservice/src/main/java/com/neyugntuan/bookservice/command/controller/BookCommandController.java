@@ -4,7 +4,6 @@ package com.neyugntuan.bookservice.command.controller;
 import com.neyugntuan.bookservice.command.command.CreateBookCommand;
 import com.neyugntuan.bookservice.command.command.DeleteBookCommand;
 import com.neyugntuan.bookservice.command.command.UpdateBookCommand;
-import com.neyugntuan.bookservice.command.event.BookUpdatedEvent;
 import com.neyugntuan.bookservice.command.model.BookRequestModel;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
