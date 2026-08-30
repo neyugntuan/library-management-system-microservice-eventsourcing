@@ -2,6 +2,7 @@ package com.neyugntuan.employeeservice.command.controller;
 
 
 import com.neyugntuan.employeeservice.command.command.CreateEmployeeCommand;
+import com.neyugntuan.employeeservice.command.command.DeleteEmployeeCommand;
 import com.neyugntuan.employeeservice.command.command.UpdateEmployeeCommand;
 import com.neyugntuan.employeeservice.command.model.CreateEmployeeModel;
 import com.neyugntuan.employeeservice.command.model.UpdateEmployeeModel;
@@ -38,6 +39,12 @@ public class EmployeeCommandController {
                                                                     model.getKin(),
                                                                     model.getIsDisciplined());
 
+        return commandGateway.sendAndWait(command);
+    }
+
+    @DeleteMapping("/{employeeId}")
+    public String deleteEmployee(@PathVariable String employeeId){
+        DeleteEmployeeCommand command = new DeleteEmployeeCommand(employeeId);
         return commandGateway.sendAndWait(command);
     }
 }

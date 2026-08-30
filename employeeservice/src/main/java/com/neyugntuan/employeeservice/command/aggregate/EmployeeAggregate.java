@@ -3,8 +3,10 @@ package com.neyugntuan.employeeservice.command.aggregate;
 
 import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.neyugntuan.employeeservice.command.command.CreateEmployeeCommand;
+import com.neyugntuan.employeeservice.command.command.DeleteEmployeeCommand;
 import com.neyugntuan.employeeservice.command.command.UpdateEmployeeCommand;
 import com.neyugntuan.employeeservice.command.event.EmployeeCreatedEvent;
+import com.neyugntuan.employeeservice.command.event.EmployeeDeletedEvent;
 import com.neyugntuan.employeeservice.command.event.EmployeeUpdatedEvent;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
@@ -44,6 +46,13 @@ public class EmployeeAggregate {
         AggregateLifecycle.apply(event);
     }
 
+    @CommandHandler
+    public void handler(DeleteEmployeeCommand command){
+        EmployeeDeletedEvent event = new EmployeeDeletedEvent();
+        BeanUtils.copyProperties(command, event);
+        AggregateLifecycle.apply(event);
+    }
+
     @EventSourcingHandler
     public void on(EmployeeCreatedEvent event){
         this.id = event.getId();
@@ -60,6 +69,11 @@ public class EmployeeAggregate {
         this.lastName = event.getLastName();
         this.Kin = event.getKin();
         this.isDisciplined = event.getIsDisciplined();
+    }
+
+    @EventSourcingHandler
+    public void on(EmployeeDeletedEvent event){
+        this.id = event.getId();
     }
 
 }
