@@ -4,6 +4,8 @@ package com.neyugntuan.employeeservice.command.event;
 import com.neyugntuan.employeeservice.command.data.Employee;
 import com.neyugntuan.employeeservice.command.data.EmployeeRepository;
 import jakarta.ws.rs.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
+import org.axonframework.eventhandling.DisallowReplay;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class EmployeeEventHandler {
 
@@ -38,9 +41,14 @@ public class EmployeeEventHandler {
     }
 
     @EventHandler
+    @DisallowReplay //Tránh cho event tự gọi sau khi start service(thất bại ở lần gọi trước)
     public void on(EmployeeDeletedEvent event) throws Exception{
-        employeeRepository.findById(event.getId()).orElseThrow(() -> new Exception("Employee Not Found"));
+        try{
+            employeeRepository.findById(event.getId()).orElseThrow(() -> new Exception("Employee Not Found"));
+            employeeRepository.deleteById(event.getId());
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
 
-        employeeRepository.deleteById(event.getId());
     }
 }
