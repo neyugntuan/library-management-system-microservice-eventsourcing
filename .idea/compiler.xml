@@ -12,6 +12,7 @@
         <module name="commonservice" />
         <module name="discoverserver" />
         <module name="bookservice" />
+        <module name="notificationservice" />
       </profile>
     </annotationProcessing>
   </component>
@@ -22,6 +23,7 @@
       <module name="commonservice" options="-parameters" />
       <module name="discoverserver" options="-parameters" />
       <module name="employeeservice" options="-parameters" />
+      <module name="notificationservice" options="-parameters" />
     </option>
   </component>
 </project>
