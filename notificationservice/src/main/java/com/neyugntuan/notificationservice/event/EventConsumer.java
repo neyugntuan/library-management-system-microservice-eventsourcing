@@ -1,8 +1,10 @@
 package com.neyugntuan.notificationservice.event;
 
 
+import com.neyugntuan.commonservice.services.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.errors.RetriableException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class EventConsumer {
+
+    @Autowired
+    private EmailService emailService;
 
     @RetryableTopic(
             attempts = "4", //3 topic retry + 1 topic dead letter queue
@@ -34,6 +39,22 @@ public class EventConsumer {
     @DltHandler
     void processDltMessage(@Payload String message){
         log.info("DLT receive message: "+message);
+    }
+
+    @KafkaListener(topics = "testEmail",
+            containerFactory = "kafkaListenerContainerFactory")
+    public void testEmail(String message){
+        log.info("Received message: "+message);
+
+        String template = "<div>\n" +
+                "    <h1>Welcome, %s!</h1>\n" +
+                "    <p>Thank you for joining us. We're excited to have you on board.</p>\n" +
+                "    <p>Your username is: <strong>%s</strong></p>\n" +
+                "</div>";
+        String filledTemplate = String.format(template, "Nguyen Tuan", message);
+
+        emailService.sendEmail(message, "Thank for buy my course", filledTemplate, true, null);
+
     }
 
 }
