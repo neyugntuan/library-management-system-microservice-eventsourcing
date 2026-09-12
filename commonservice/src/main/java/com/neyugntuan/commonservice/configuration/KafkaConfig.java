@@ -27,13 +27,13 @@ public class KafkaConfig {
     public ProducerFactory<String, String> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
-                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, //Kafka broker ở đâu? localhost:9092
                 bootstrapServers);
         configProps.put(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, //Serialize key thế nào? string -> byte
                 StringSerializer.class);
         configProps.put(
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, //Serialize value thế nào?
                 StringSerializer.class);
         return new DefaultKafkaProducerFactory<>(configProps);
     }
