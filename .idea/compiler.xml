@@ -8,8 +8,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="apigateway" />
-        <module name="employeeservice" />
         <module name="commonservice" />
+        <module name="borrowingservice" />
+        <module name="employeeservice" />
         <module name="discoverserver" />
         <module name="bookservice" />
         <module name="notificationservice" />
@@ -20,6 +21,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="apigateway" options="-parameters" />
       <module name="bookservice" options="-parameters" />
+      <module name="borrowingservice" options="-parameters" />
       <module name="commonservice" options="-parameters" />
       <module name="discoverserver" options="-parameters" />
       <module name="employeeservice" options="-parameters" />
