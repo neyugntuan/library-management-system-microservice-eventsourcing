@@ -3,20 +3,18 @@ package com.neyugntuan.employeeservice.command.event;
 
 import com.neyugntuan.employeeservice.command.data.Employee;
 import com.neyugntuan.employeeservice.command.data.EmployeeRepository;
-import jakarta.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.eventhandling.DisallowReplay;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Slf4j
 @Component
-public class EmployeeEventHandler {
+public class EmployeeEventsHandler {
 
     @Autowired
     private EmployeeRepository employeeRepository;
