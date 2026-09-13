@@ -2,8 +2,12 @@ package com.neyugntuan.borrowingservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@EnableDiscoveryClient
+@ComponentScan({"com.neyugntuan.borrowingservice","com.neyugntuan.commonservice"})
 public class BorrowingserviceApplication {
 
 	public static void main(String[] args) {
