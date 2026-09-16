@@ -1,4 +1,4 @@
-package com.neyugntuan.bookservice.query.queries;
+package com.neyugntuan.commonservice.queries;
 
 
 import lombok.AllArgsConstructor;

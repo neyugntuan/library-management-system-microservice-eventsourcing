@@ -5,7 +5,8 @@ import com.neyugntuan.bookservice.command.data.Book;
 import com.neyugntuan.bookservice.command.data.BookRepository;
 import com.neyugntuan.bookservice.query.model.BookResponseModel;
 import com.neyugntuan.bookservice.query.queries.GetAllBookQuery;
-import com.neyugntuan.bookservice.query.queries.GetBookDetailQuery;
+import com.neyugntuan.commonservice.model.BookResponseCommonModel;
+import com.neyugntuan.commonservice.queries.GetBookDetailQuery;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class BookProjection {
@@ -35,8 +35,8 @@ public class BookProjection {
     }
 
     @QueryHandler
-    public BookResponseModel handle(GetBookDetailQuery query){
-        BookResponseModel bookResponseModel = new BookResponseModel();
+    public BookResponseCommonModel handle(GetBookDetailQuery query){
+        BookResponseCommonModel bookResponseModel = new BookResponseCommonModel();
 
         Book book = bookRepository.findById(query.getId()).orElseThrow(() -> new RuntimeException("Not Found Book with Book id"+ query.getId()));
 
