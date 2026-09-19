@@ -1,10 +1,10 @@
 package com.neyugntuan.employeeservice.query.controller;
 
 
-import com.neyugntuan.employeeservice.command.data.Employee;
+import com.neyugntuan.commonservice.model.EmployeeResponseCommonModel;
 import com.neyugntuan.employeeservice.query.model.EmployeeResponseModel;
 import com.neyugntuan.employeeservice.query.queries.GetAllEmployeeQuery;
-import com.neyugntuan.employeeservice.query.queries.GetDetailEmployeeQuery;
+import com.neyugntuan.commonservice.queries.GetDetailEmployeeQuery;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -49,9 +49,9 @@ public class EmployeeQueryController {
     }
 
     @GetMapping("/{employeeId}")
-    public EmployeeResponseModel getDetailEmployee(@PathVariable String employeeId){
+    public EmployeeResponseCommonModel getDetailEmployee(@PathVariable String employeeId){
         return queryGateway
-                .query(new GetDetailEmployeeQuery(employeeId) , ResponseTypes.instanceOf(EmployeeResponseModel.class))
+                .query(new GetDetailEmployeeQuery(employeeId) , ResponseTypes.instanceOf(EmployeeResponseCommonModel.class))
                 .join();
     }
 }

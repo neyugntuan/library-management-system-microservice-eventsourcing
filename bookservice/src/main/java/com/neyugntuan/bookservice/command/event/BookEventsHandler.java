@@ -3,6 +3,7 @@ package com.neyugntuan.bookservice.command.event;
 
 import com.neyugntuan.bookservice.command.data.Book;
 import com.neyugntuan.bookservice.command.data.BookRepository;
+import com.neyugntuan.commonservice.event.BookRollBackStatusEvent;
 import com.neyugntuan.commonservice.event.BookUpdateStatusEvent;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.BeanUtils;
@@ -51,6 +52,15 @@ public class BookEventsHandler {
         Optional<Book> oldBook = bookRepository.findById(event.getId());
 
         oldBook.ifPresent(book -> bookRepository.delete(book));
+    }
+
+    @EventHandler
+    public void on(BookRollBackStatusEvent event){
+        Optional<Book> oldBook = bookRepository.findById(event.getBookId());
+        oldBook.ifPresent(book -> {
+            book.setIsReady(event.getIsReady());
+            bookRepository.save(book);
+        });
     }
 
 
