@@ -38,6 +38,7 @@ public class EventConsumer {
     public void listen(String message){
         log.info("Received message: "+message);
         //processing message
+        throw new RuntimeException("Error test");
     }
 
     @DltHandler
