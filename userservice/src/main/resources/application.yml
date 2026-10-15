@@ -4,14 +4,14 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://discoveryserver:8761/eureka
 
 
 spring:
   application:
     name: userservice
   datasource:
-    url: jdbc:mysql://localhost:3306/neyugntuan?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://host.docker.internal:3306/neyugntuan?useSSL=false&serverTimezone=UTC
     username: root
     password:
 
@@ -23,9 +23,16 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+  data:
+    redis:
+      host: redis
+      port: 6379
+  cache:
+    type: redis
+
 idp:
-  url: http://localhost:8180
+  url: http://keycloak:8080
   client-id: neyugntuan_app
-  client-secret: 37rpe4mMK5Vj8r3sGmpF1u3KdWXY0OzI
+  client-secret: hy1xmoSO6uPkeS8fn0wLw8TpVbBCTTTA
   realm: neyugntuan
 

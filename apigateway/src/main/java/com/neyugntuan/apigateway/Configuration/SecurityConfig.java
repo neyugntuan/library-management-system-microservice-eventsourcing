@@ -13,11 +13,16 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @Configuration
 @EnableReactiveMethodSecurity
 public class SecurityConfig {
+
+    private static final String[] PUBLIC_ENDPOINT = {
+            "api/v1/public/**"
+    };
+
     @Bean
     SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception {
         http.csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("api/v1/public/**").permitAll() // Cho phép không auth
+                        .pathMatchers(PUBLIC_ENDPOINT).permitAll() // Cho phép không auth
                         .anyExchange().authenticated()          // Còn lại cần xác thực
                 )
                 .oauth2ResourceServer(resourceServer -> resourceServer

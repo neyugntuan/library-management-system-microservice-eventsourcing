@@ -24,7 +24,6 @@ spring:
                 redis-rate-limiter.replenishRate: 10 #trong 1s nap lai x token
                 redis-rate-limiter.burstCapacity: 20 #toi da trong bucket co x token
                 redis-rate-limiter.requestedTokens: 1 #1 request = 1 token
-            - KeyAuthFilter
         - id: bookservice
           uri: lb://bookservice
           predicates:
@@ -35,15 +34,24 @@ spring:
                 redis-rate-limiter.replenishRate: 10 #trong 1s nap lai x token
                 redis-rate-limiter.burstCapacity: 20 #toi da trong bucket co x token
                 redis-rate-limiter.requestedTokens: 1 #1 request = 1 token
-            - KeyAuthFilter
+        - id: borrowingservice
+          uri: lb://borrowingservice
+          predicates:
+            - Path=/api/v1/borrowingservice/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10 #trong 1s nap lai x token
+                redis-rate-limiter.burstCapacity: 20 #toi da trong bucket co x token
+                redis-rate-limiter.requestedTokens: 1 #1 request = 1 token
         - id: userservice
-          uri: http://localhost:9005
+          uri: lb://userservice
           predicates:
             - Path=/api/v1/users/**
           filters:
             - name: JwtHeaderFilter
         - id: userservice-public
-          uri: http://localhost:9005
+          uri: lb://userservice
           predicates:
             - Path=/api/v1/public/**
 
@@ -52,7 +60,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8180/realms/neyugntuan
+          issuer-uri: http://keycloak:8080/realms/neyugntuan
 eureka:
   instance:
     hostname: discoveryserver

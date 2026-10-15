@@ -14,6 +14,8 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -77,6 +79,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @Cacheable(value = "users:all", key = "'all'")
     public List<UserResponseDTO> getAllUsers() {
         return userRepository.findAll().stream().map(this::toDTO).collect(Collectors.toList());
     }
@@ -89,6 +92,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @CacheEvict(value = "users:all", key = "'all'")
     public UserResponseDTO updateUser(Long id, CreateUserRequestDTO dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
@@ -104,6 +108,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @CacheEvict(value = "users:all", key = "'all'")
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }

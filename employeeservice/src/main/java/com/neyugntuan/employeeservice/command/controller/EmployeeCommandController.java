@@ -43,7 +43,6 @@ public class EmployeeCommandController {
         return commandGateway.sendAndWait(command);
     }
 
-    @Hidden
     @DeleteMapping("/{employeeId}")
     public String deleteEmployee(@PathVariable String employeeId){
         DeleteEmployeeCommand command = new DeleteEmployeeCommand(employeeId);

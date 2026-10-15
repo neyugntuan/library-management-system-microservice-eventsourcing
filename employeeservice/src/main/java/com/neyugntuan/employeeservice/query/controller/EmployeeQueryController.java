@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/employees")
 @Tag(name = "Employee Query")
-@Hidden
 @Slf4j
 public class EmployeeQueryController {
     @Autowired
