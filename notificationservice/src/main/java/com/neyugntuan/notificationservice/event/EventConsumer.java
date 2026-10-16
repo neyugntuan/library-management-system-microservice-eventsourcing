@@ -30,7 +30,6 @@ public class EventConsumer {
             autoCreateTopics = "true", //tu dat ten topic
             dltStrategy = DltStrategy.FAIL_ON_ERROR,
             include = {RetriableException.class, RuntimeException.class}
-
     )
     @KafkaListener(topics = "test",
             containerFactory = "kafkaListenerContainerFactory"
@@ -48,6 +47,13 @@ public class EventConsumer {
 
     @KafkaListener(topics = "testEmail",
             containerFactory = "kafkaListenerContainerFactory")
+    @RetryableTopic(
+            attempts = "4", //3 topic retry + 1 topic dead letter queue
+            backoff = @Backoff(delay = 1000, multiplier = 2),
+            autoCreateTopics = "true", //tu dat ten topic
+            dltStrategy = DltStrategy.FAIL_ON_ERROR,
+            include = {RetriableException.class, RuntimeException.class}
+    )
     public void testEmail(String message){
         log.info("Received message: "+message);
 
@@ -64,13 +70,20 @@ public class EventConsumer {
 
     @KafkaListener(topics = "emailTemplate",
             containerFactory = "kafkaListenerContainerFactory")
+    @RetryableTopic(
+            attempts = "4", //3 topic retry + 1 topic dead letter queue
+            backoff = @Backoff(delay = 1000, multiplier = 2),
+            autoCreateTopics = "true", //tu dat ten topic
+            dltStrategy = DltStrategy.FAIL_ON_ERROR,
+            include = {RetriableException.class, RuntimeException.class}
+    )
     public void emailTemplate(String message){
         log.info("Received message: "+message);
 
         Map<String, Object> placeholders = new HashMap<>();
         placeholders.put("name", "Neyugn tuan");
 
-        emailService.sendEmailWithTemplate(message, "Welcome to Chrismas", "emailTemplate.ftl", placeholders, null);
+        emailService.sendEmailWithTemplate(message, "Tạo Tài Khoản Thành Công!", "emailTemplate.ftl", placeholders, null);
     }
 
 }

@@ -70,4 +70,8 @@ public class KafkaConfig {
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
+
+    public KafkaConfig() {
+        System.out.println(">>> KafkaConfig initialized");
+    }
 }

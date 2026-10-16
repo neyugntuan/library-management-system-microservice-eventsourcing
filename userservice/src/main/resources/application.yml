@@ -30,9 +30,32 @@ spring:
   cache:
     type: redis
 
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:broker:9092}
+    consumer:
+      group-id: ${KAFKA_GROUP_ID:default-group}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: neyugntuana9@gmail.com
+    password: pzqs psbf ewgv xwmz
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        transport:
+          protocol: smtp
+
 idp:
   url: http://keycloak:8080
   client-id: neyugntuan_app
   client-secret: hy1xmoSO6uPkeS8fn0wLw8TpVbBCTTTA
   realm: neyugntuan
 
+
+axon:
+  axonserver:
+    servers: axonserver:8124

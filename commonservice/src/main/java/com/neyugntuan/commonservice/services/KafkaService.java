@@ -17,4 +17,11 @@ public class KafkaService {
         kafkaTemplate.send(topic,message);
         log.info("Message send to topic: "+topic);
     }
+
+    public void sendEmailWithTemplate(String topic, String message){
+        kafkaTemplate.send(topic, message);
+        log.info("Sent Email to topic: "+topic);
+    }
+
+
 }

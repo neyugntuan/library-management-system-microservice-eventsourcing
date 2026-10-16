@@ -1,5 +1,8 @@
 package com.neyugntuan.userservice.service.impl;
 
+import com.neyugntuan.commonservice.common.AppException;
+import com.neyugntuan.commonservice.common.ErrorCode;
+import com.neyugntuan.commonservice.services.KafkaService;
 import com.neyugntuan.userservice.dto.CreateUserRequestDTO;
 import com.neyugntuan.userservice.dto.LoginRequestDto;
 import com.neyugntuan.userservice.dto.UserResponseDTO;
@@ -25,6 +28,9 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class UserServiceImpl implements IUserService {
+
+    @Autowired
+    private KafkaService kafkaService;
 
     @Autowired
     private UserRepository userRepository;
@@ -71,31 +77,30 @@ public class UserServiceImpl implements IUserService {
 
         String userId = extractUserId(creationResponse);
         log.info("UserId {}", userId);
-
-
-
         User user = userRepository.save(toEntity(request,userId));
+
+        kafkaService.sendMessage("emailTemplate", user.getEmail());
         return toDTO(user);
     }
 
     @Override
-    @Cacheable(value = "users:all", key = "'all'")
     public List<UserResponseDTO> getAllUsers() {
         return userRepository.findAll().stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Override
+    @Cacheable(value = "users", key = "#id")
     public UserResponseDTO getUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return toDTO(user);
     }
 
     @Override
-    @CacheEvict(value = "users:all", key = "'all'")
+    @CacheEvict(value = "users", key = "#id")
     public UserResponseDTO updateUser(Long id, CreateUserRequestDTO dto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         user.setEmail(dto.getEmail());
         user.setUsername(dto.getUsername());
@@ -108,7 +113,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @CacheEvict(value = "users:all", key = "'all'")
+    @CacheEvict(value = "users", key = "#id")
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
