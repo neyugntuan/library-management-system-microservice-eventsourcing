@@ -5,6 +5,7 @@ import com.neyugntuan.commonservice.common.ErrorCode;
 import com.neyugntuan.commonservice.services.KafkaService;
 import com.neyugntuan.userservice.dto.CreateUserRequestDTO;
 import com.neyugntuan.userservice.dto.LoginRequestDto;
+import com.neyugntuan.userservice.dto.UpdateUserRequestDTO;
 import com.neyugntuan.userservice.dto.UserResponseDTO;
 import com.neyugntuan.userservice.dto.identity.*;
 import com.neyugntuan.userservice.dto.identity.*;
@@ -23,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -98,10 +100,32 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @CacheEvict(value = "users", key = "#id")
-    public UserResponseDTO updateUser(Long id, CreateUserRequestDTO dto) {
+    public UserResponseDTO updateUser(Long id, UpdateUserRequestDTO dto, String token) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+                .orElseThrow(() ->
+                        new AppException(ErrorCode.USER_NOT_EXISTED));
 
+        String accessToken = token.startsWith("Bearer ")
+                ? token
+                : "Bearer " + token;
+
+
+        // Chuẩn bị dữ liệu update Keycloak
+        UserCreationParam keycloakUser =
+                UserCreationParam.builder()
+                        .username(dto.getUsername())
+                        .email(dto.getEmail())
+                        .firstName(dto.getFirstName())
+                        .lastName(dto.getLastName())
+                        .build();
+
+        identityClient.updateUser(
+                token,
+                user.getUserId(),
+                keycloakUser
+        );
+
+        // Update MySQL
         user.setEmail(dto.getEmail());
         user.setUsername(dto.getUsername());
         user.setFirstName(dto.getFirstName());
@@ -114,7 +138,18 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @CacheEvict(value = "users", key = "#id")
-    public void deleteUser(Long id) {
+    public void deleteUser(Long id, String token) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() ->
+                        new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        String accessToken = token.startsWith("Bearer ")
+                ? token
+                : "Bearer " + token;
+
+
+        identityClient.deleteUser(accessToken, user.getUserId());
+
         userRepository.deleteById(id);
     }
 

@@ -1,6 +1,8 @@
 package com.neyugntuan.employeeservice.command.event;
 
 
+import com.neyugntuan.commonservice.common.AppException;
+import com.neyugntuan.commonservice.common.ErrorCode;
 import com.neyugntuan.employeeservice.command.data.Employee;
 import com.neyugntuan.employeeservice.command.data.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +32,7 @@ public class EmployeeEventsHandler {
     public void on(EmployeeUpdatedEvent event) throws Exception{
         Optional<Employee> oldEmployee= employeeRepository.findById(event.getId());
 
-        Employee employee = oldEmployee.orElseThrow(() -> new Exception("Employee Not Found"));
+        Employee employee = oldEmployee.orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_EXISTED));
         employee.setFirstName(event.getFirstName());
         employee.setLastName(event.getLastName());
         employee.setKin(event.getKin());
@@ -42,7 +44,7 @@ public class EmployeeEventsHandler {
     @DisallowReplay //Tránh cho event tự gọi sau khi start service(thất bại ở lần gọi trước)
     public void on(EmployeeDeletedEvent event) throws Exception{
         try{
-            employeeRepository.findById(event.getId()).orElseThrow(() -> new Exception("Employee Not Found"));
+            employeeRepository.findById(event.getId()).orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_EXISTED));
             employeeRepository.deleteById(event.getId());
         }catch (Exception ex){
             log.error(ex.getMessage());
