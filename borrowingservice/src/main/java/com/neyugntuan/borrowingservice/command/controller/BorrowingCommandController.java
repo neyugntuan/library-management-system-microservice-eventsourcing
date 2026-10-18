@@ -2,6 +2,7 @@ package com.neyugntuan.borrowingservice.command.controller;
 
 import com.neyugntuan.borrowingservice.command.command.CreateBorrowingCommand;
 import com.neyugntuan.borrowingservice.command.model.BorrowingCreateModel;
+import jakarta.validation.Valid;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class BorrowingCommandController {
     private CommandGateway commandGateway;
 
     @PostMapping
-    public String createBorrowing(@RequestBody BorrowingCreateModel model){
+    public String createBorrowing(@Valid @RequestBody BorrowingCreateModel model){
         CreateBorrowingCommand command = new CreateBorrowingCommand(UUID.randomUUID().toString(), model.getBookId(), model.getEmployeeId(), new Date());
         return commandGateway.sendAndWait(command);
     }

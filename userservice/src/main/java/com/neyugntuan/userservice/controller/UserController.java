@@ -4,6 +4,7 @@ import com.neyugntuan.userservice.dto.CreateUserRequestDTO;
 import com.neyugntuan.userservice.dto.UpdateUserRequestDTO;
 import com.neyugntuan.userservice.dto.UserResponseDTO;
 import com.neyugntuan.userservice.service.IUserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class UserController {
     private IUserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody CreateUserRequestDTO dto) {
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody CreateUserRequestDTO dto) {
         return ResponseEntity.ok(userService.createUser(dto));
     }
 
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody UpdateUserRequestDTO dto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id,@Valid @RequestBody UpdateUserRequestDTO dto, @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(userService.updateUser(id, dto, token));
     }
 

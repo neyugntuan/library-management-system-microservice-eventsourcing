@@ -3,6 +3,7 @@ package com.neyugntuan.bookservice.command.event;
 
 import com.neyugntuan.bookservice.command.data.Book;
 import com.neyugntuan.bookservice.command.data.BookRepository;
+import com.neyugntuan.commonservice.common.AppException;
 import com.neyugntuan.commonservice.event.BookRollBackStatusEvent;
 import com.neyugntuan.commonservice.event.BookUpdateStatusEvent;
 import org.axonframework.eventhandling.EventHandler;
@@ -28,7 +29,6 @@ public class BookEventsHandler {
     @EventHandler
     public void on(BookUpdatedEvent event){
         Optional<Book> oldBook = bookRepository.findById(event.getId());
-
         oldBook.ifPresent(book -> {
             book.setAuthor(event.getAuthor());
             book.setName(event.getName());

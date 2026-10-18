@@ -15,7 +15,8 @@ public enum ErrorCode {
     USER_NOT_EXISTED(1005, "User not existed", HttpStatus.NOT_FOUND), // 404
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED), // 401 chưa xác thực
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN), // 403 không có quyền truy cập tài nguyên
-    EMPLOYEE_NOT_EXISTED(1008, "Employee not existed", HttpStatus.NOT_FOUND);
+    EMPLOYEE_NOT_EXISTED(1008, "Employee not existed", HttpStatus.NOT_FOUND),
+    BOOK_NOT_EXISTED(1009,"BOOK NOT EXISTED", HttpStatus.NOT_FOUND);
 
     private final int code;
     private final String message;
