@@ -1,0 +1,5 @@
+app:
+  kafka:
+    enabled: false
+  email:
+    enabled: false

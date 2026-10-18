@@ -19,6 +19,13 @@ import java.util.List;
 @EnableReactiveMethodSecurity
 public class SecurityConfig {
 
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    public SecurityConfig(
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+    }
+
     private static final String[] PUBLIC_ENDPOINT = {
             "api/v1/public/**"
     };
@@ -32,7 +39,9 @@ public class SecurityConfig {
                 )
                 .oauth2ResourceServer(resourceServer -> resourceServer
                         .jwt(Customizer.withDefaults())
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 );
+        http.cors(Customizer.withDefaults());
         return http.build();
     }
 

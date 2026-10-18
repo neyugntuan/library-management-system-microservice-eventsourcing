@@ -4,6 +4,10 @@ WORKDIR /app
 
 
 COPY ./apigateway ./apigateway
+COPY ./commonservice ./commonservice
+
+WORKDIR /app/commonservice
+RUN mvn clean install -DskipTests
 
 WORKDIR /app/apigateway
 RUN mvn clean package -DskipTests

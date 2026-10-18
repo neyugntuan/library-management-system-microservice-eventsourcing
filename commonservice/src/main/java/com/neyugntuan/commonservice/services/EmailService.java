@@ -8,6 +8,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMailMessage;
@@ -21,6 +22,10 @@ import java.util.Map;
 
 @Service
 @Slf4j
+@ConditionalOnProperty(
+        name = "app.email.enabled",
+        havingValue = "true"
+)
 public class EmailService {
 
     @Autowired
