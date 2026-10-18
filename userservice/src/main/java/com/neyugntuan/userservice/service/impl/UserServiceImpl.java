@@ -120,7 +120,7 @@ public class UserServiceImpl implements IUserService {
                         .build();
 
         identityClient.updateUser(
-                token,
+                accessToken,
                 user.getUserId(),
                 keycloakUser
         );
