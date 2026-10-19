@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookservice
+  labels:
+    app: bookservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookservice
+  template:
+    metadata:
+      labels:
+        app: bookservice
+    spec:
+      containers:
+        - name: bookservice
+          image: library-management-system-microservice-eventsourcing-bookservice:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 9001
+          env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discoveryserver:8761/eureka"
+            - name: AXON_AXONSERVER_SERVERS
+              value: "axonserver:8124"

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: borrowingservice
+  labels:
+    app: borrowingservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: borrowingservice
+  template:
+    metadata:
+      labels:
+        app: borrowingservice
+    spec:
+      containers:
+        - name: borrowingservice
+          image: library-management-system-microservice-eventsourcing-borrowingservice:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 9004
+          env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discoveryserver:8761/eureka/"
+            - name: AXONIQ_AXONSERVER_SERVERS
+              value: "axonserver:8124"

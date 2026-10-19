@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notificationservice
+  labels:
+    app: notificationservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notificationservice
+  template:
+    metadata:
+      labels:
+        app: notificationservice
+    spec:
+      containers:
+        - name: notificationservice
+          image: library-management-system-microservice-eventsourcing-notificationservice:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 9003
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "broker:9092"
+
+            - name: AXONIQ_AXONSERVER_SERVERS
+              value: "axonserver:8124"

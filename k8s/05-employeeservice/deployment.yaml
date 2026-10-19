@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employeeservice
+  labels:
+    app: employeeservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employeeservice
+  template:
+    metadata:
+      labels:
+        app: employeeservice
+    spec:
+      containers:
+        - name: employeeservice
+          image: library-management-system-microservice-eventsourcing-employeeservice:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 9002
+          env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discoveryserver:8761/eureka"
+            - name: AXONIQ_AXONSERVER_SERVERS
+              value: "axonserver:8124"

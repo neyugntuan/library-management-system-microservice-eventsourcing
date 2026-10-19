@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: axonserver
+  labels:
+    app: axonserver
+spec:
+  serviceName: axonserver-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: axonserver
+  template:
+    metadata:
+      labels:
+        app: axonserver
+    spec:
+      containers:
+        - name: axonserver
+          image: axoniq/axonserver:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: dashboard
+              containerPort: 8024
+            - name: grpc
+              containerPort: 8124
+            - name: admin
+              containerPort: 8224
+          env:
+            - name: AXONIQ_AXONSERVER_NAME
+              value: "axonserver"
+            - name: AXONIQ_AXONSERVER_HOSTNAME
+              value: "axonserver-0.axonserver-headless.default.svc.cluster.local"
+            - name: AXONIQ_AXONSERVER_INTERNAL_HOSTNAME
+              value: "axonserver-0.axonserver-headless.default.svc.cluster.local"
+            - name: AXONIQ_CONSOLE_AUTHENTICATION
+              value: "4b380927-0:a75fbcc12b9e404d8c878eb16314bc2c"
+          volumeMounts:
+            - name: axonserver-data
+              mountPath: /axonserver/data
+            - name: axonserver-events
+              mountPath: /axonserver/events
+            - name: axonserver-log
+              mountPath: /axonserver/log
+      volumes:
+        - name: axonserver-data
+          persistentVolumeClaim:
+            claimName: axonserver-data
+        - name: axonserver-events
+          persistentVolumeClaim:
+            claimName: axonserver-data
+        - name: axonserver-log
+          persistentVolumeClaim:
+            claimName: axonserver-data
+
+
+
