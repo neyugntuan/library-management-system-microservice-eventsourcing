@@ -105,7 +105,6 @@ services:
     hostname: axonserver
     container_name: axonserver
     environment:
-#      - "AXONIQ_AXONSERVER_STANDALONE=TRUE"
       - "AXONIQ_CONSOLE_AUTHENTICATION=4b380927-0:a75fbcc12b9e404d8c878eb16314bc2c"
     ports:
       - "8024:8024"
