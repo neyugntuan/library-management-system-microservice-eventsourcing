@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userservice
+  labels:
+    app: userservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userservice
+  template:
+    metadata:
+      labels:
+        app: userservice
+    spec:
+      containers:
+        - name: userservice
+          image: library-management-system-microservice-eventsourcing-userservice:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 9005
+          env:
+            - name: SERVER_PORT
+              value: "9005"
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discoveryserver:8761/eureka"
+            - name: AXONIQ_AXONSERVER_SERVERS
+              value: "axonserver:8124"

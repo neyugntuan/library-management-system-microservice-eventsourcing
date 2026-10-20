@@ -5,6 +5,8 @@ eureka:
   client:
     service-url:
       defaultZone: http://discoveryserver:8761/eureka
+  instance:
+    prefer-ip-address: true
 
 
 spring:
@@ -52,7 +54,7 @@ spring:
 idp:
   url: http://keycloak:8080
   client-id: neyugntuan_app
-  client-secret: hy1xmoSO6uPkeS8fn0wLw8TpVbBCTTTA
+  client-secret: 1fiJrmfLbKAUbRDQNRYgSLQKPK2inxh3
   realm: neyugntuan
 
 
